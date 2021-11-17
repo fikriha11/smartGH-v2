@@ -23,10 +23,16 @@ bool IsiTandonCampuran = false;
 bool PenambahanABmix = false;
 bool Distribusi = false;
 bool Mixing = false;
+bool BacaSensor = true;
 
 bool PupukA = false;
 bool PupukB = false;
 
+/* trial */
+String SerialData;
+String Data[10];
+String SplitData;
+int StringData;
 
 struct SensorFlow {
   int Count;
@@ -34,17 +40,19 @@ struct SensorFlow {
 } FlowA, FlowB;
 
 
-
 void BacaSensorTandonUtama() {
-  vTandonUtama = analogRead(A2);
+  // vTandonUtama = analogRead(16);
+  vTandonUtama = Data[0].toInt();
   if (vTandonUtama < 200) {
     ProsesMixing = true;
     IsiTandonCampuran = true;
+    BacaSensor = false;
   }
 }
 
 bool WaterLvlTandonCampuran() {
-  vTandonCampuran = analogRead(A3);
+  // vTandonCampuran = analogRead(17);
+  vTandonCampuran = Data[1].toInt();
   if (vTandonCampuran > 5000) {
     return false;
   } else {
@@ -60,7 +68,7 @@ void Pompa(int Status) {
   }
 }
 
-void MotorMix(int Type, int Status) { 
+void MotorMix(int Type, int Status) {
   if (Status == ON) {
     digitalWrite(Type, HIGH);
   } else {
@@ -108,6 +116,10 @@ void setup() {
 
 
 void loop() {
+  debug();
+  if (BacaSensor) {
+    BacaSensorTandonUtama();
+  }
   if (ProsesMixing) {
 
     /******* Isi Air Tandon Campuran ******/
@@ -116,6 +128,7 @@ void loop() {
         Pompa(ON);
         MotorMix(MotorMixA, ON);
         MotorMix(MotorMixB, ON);
+        Serial.println("Isi Air");
       } else {
         Pompa(OFF);
         MotorMix(MotorMixA, OFF);
@@ -123,12 +136,14 @@ void loop() {
         IsiTandonCampuran = false;
         PenambahanABmix = true;
         PupukA = true;
+        Serial.println("Air Full");
       }
     }
 
     /******* Proses Penambahan Pupuk ABmix ******/
     else if (PenambahanABmix) {
       if (PupukA) {
+        Serial.println("ISI PUPUk");
         digitalWrite(ValveMixA, HIGH);
         if (FlowMeterA() >= 500) {
           digitalWrite(ValveMixA, LOW);
@@ -161,6 +176,7 @@ void loop() {
       if (!WaterLvlTandonCampuran()) {
         digitalWrite(VTCampuran, LOW);
         ProsesMixing = false;
+        BacaSensor = true;
       }
     }
   }
