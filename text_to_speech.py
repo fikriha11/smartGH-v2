@@ -1,7 +1,6 @@
 import pygame
 from typing import Text
 from gtts import gTTS
-from playsound import playsound
 
 def output (phrase):
     my_text = phrase    
