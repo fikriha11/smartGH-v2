@@ -1,9 +1,5 @@
 from typing import Text
 from gtts import gTTS
-import sys
-import subprocess
-subprocess.check_call([sys.executable, '-m', 'pip', 'install','playsound'])
-import playsound
 from playsound import playsound
 
 def output (phrase):
