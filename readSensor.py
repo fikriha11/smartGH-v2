@@ -18,7 +18,7 @@ while True:
         humidity = sensor.humidity
         print("Temperature: {}*C   Humidity: {}% ".format(temp, humidity))
         if Count == 10:
-            output(f"Selamat datang, Suhu Sekarang adalah {temp}")
+            output(f"Selamat datang, Suhu saat ini adalah {temp} dan temperature sebesar {humidity} persen")
             Count = 0
         Count += 1
     except RuntimeError as error:
