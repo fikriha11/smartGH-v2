@@ -13,7 +13,7 @@ def SoundOuput():
         temperature_c, humidity
         )
     )
-    Count = 0
+
 
 while True:
     try:
@@ -28,6 +28,7 @@ while True:
 
         if Count == 5 :
             SoundOuput()
+            Count = 0
         Count += 1
  
     except RuntimeError as error:
