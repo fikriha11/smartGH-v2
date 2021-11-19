@@ -15,6 +15,7 @@ def SoundOuput():
         temperature_c, humidity
         )
     )
+    ThreadCount = 0
 
 while True:
     try:
@@ -29,7 +30,6 @@ while True:
 
         if ThreadCount == 5 :
             start_new_thread(SoundOuput)
-            ThreadCount = 0
         ThreadCount += 1
  
     except RuntimeError as error:
