@@ -2,11 +2,9 @@ import board
 import adafruit_dht
 from time import sleep
 from text_to_speech import output
-from time import thread_time
-from _thread import *
 
 dhtDevice = adafruit_dht.DHT22(board.D23, use_pulseio=False)
-ThreadCount = 0
+Count = 0
 
 def SoundOuput():
     output(
@@ -15,7 +13,7 @@ def SoundOuput():
         temperature_c, humidity
         )
     )
-    ThreadCount = 0
+    Count = 0
 
 while True:
     try:
@@ -24,16 +22,16 @@ while True:
         humidity = dhtDevice.humidity
         print(
             "Temp: {:.1f} F / {:.1f} C    Humidity: {}% Count: {}".format(
-                temperature_f, temperature_c, humidity, ThreadCount
+                temperature_f, temperature_c, humidity, Count
             )
         )
 
-        if ThreadCount == 5 :
-            start_new_thread(SoundOuput)
-        ThreadCount += 1
+        if Count == 5 :
+            SoundOuput()
+        Count += 1
  
     except RuntimeError as error:
-        print(error.args[0])
+        # print(error.args[0])
         sleep(2.0)
         continue
     except Exception as error:
