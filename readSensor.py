@@ -1,29 +1,37 @@
-import time
 import board
 import adafruit_dht
+from time import sleep
+from text_to_speech import output
 
-htDevice = adafruit_dht.DHT22(board.D4, use_pulseio=False)
-
+dhtDevice = adafruit_dht.DHT22(board.D23, use_pulseio=False)
+Count = 0
 while True:
     try:
-        # Print the values to the serial port
         temperature_c = dhtDevice.temperature
         temperature_f = temperature_c * (9 / 5) + 32
         humidity = dhtDevice.humidity
         print(
-            "Temp: {:.1f} F / {:.1f} C    Humidity: {}% ".format(
-                temperature_f, temperature_c, humidity
+            "Temp: {:.1f} F / {:.1f} C    Humidity: {}% Count: ".format(
+                temperature_f, temperature_c, humidity, Count
             )
         )
+
+        if Count == 5 :
+            output(
+                "Selamat datang, Kondisi Suhu ruangan sekarang adalah {}, dan Kelembapan Sebesar {} Persen".format(
+                    temperature_c, humidity
+                    )
+                )
+            Count = 0
+        Count += 1
  
     except RuntimeError as error:
-        # Errors happen fairly often, DHT's are hard to read, just keep going
         print(error.args[0])
-        time.sleep(2.0)
+        sleep(2.0)
         continue
     except Exception as error:
         dhtDevice.exit()
         raise error
  
-    time.sleep(2.0)
+    sleep(2.0)
     
