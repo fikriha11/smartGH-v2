@@ -31,9 +31,9 @@ while True:
 
         if(time() - luxTime) > 5:
             global spectrum, Infrared, visible
-            spectrum = readLux()[0]
-            Infrared = readLux()[1]
-            visible  = readLux()[2]
+            # spectrum = readLux()[0]
+            # Infrared = readLux()[1]
+            # visible  = readLux()[2]
         
         if(time() - printTime) >= 1:
 
@@ -42,22 +42,21 @@ while True:
                     temperature_f, temperature_c, humidity, Count
                 )
             )
-            print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
-            print (f"Infrared Value : {Infrared} lux")
-            print (f"Visible Value : {visible} lux")
+            # print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
+            # print (f"Infrared Value : {Infrared} lux")
+            # print (f"Visible Value : {visible} lux")
+            Count += 1
 
         if Count == 5 :
             SoundOuput()
             Count = 0
-        Count += 1
+        
  
     except RuntimeError as error:
-        # print(error.args[0])
+        print(error.args[0])
         sleep(2.0)
         continue
     except Exception as error:
         dhtDevice.exit()
         raise error
- 
-    sleep(2.0)
     
