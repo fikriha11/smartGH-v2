@@ -11,6 +11,9 @@ printTime = time()
 dhtDevice = adafruit_dht.DHT22(board.D23, use_pulseio=False)
 Count = 0
 
+global temperature_c, humidity
+global spectrum, Infrared, visible
+
 def SoundOuput():
     output(
     "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen".
@@ -23,14 +26,13 @@ def SoundOuput():
 while True:
     try:
         if(time() - dhtTime) > 2:
-            global temperature_c, humidity
             temperature_c = dhtDevice.temperature
             temperature_f = temperature_c * (9 / 5) + 32
             humidity = dhtDevice.humidity
             dhtTime = time()
 
         if(time() - luxTime) > 5:
-            global spectrum, Infrared, visible
+
             spectrum = readLux()[0]
             Infrared = readLux()[1]
             visible  = readLux()[2]
