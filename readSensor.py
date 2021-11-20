@@ -8,6 +8,7 @@ from LuxSensor import readLux
 dhtTime = time()
 luxTime = time()
 printTime = time()
+CountTime = time()
 dhtDevice = adafruit_dht.DHT22(board.D23, use_pulseio=False)
 Count = 0
 
@@ -53,13 +54,15 @@ while True:
             print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
             print (f"Infrared Value : {Infrared} lux")
             print (f"Visible Value : {visible} lux")
-            Count += 1
             printTime = time()
+
+        if(time() - CountTime) >= 1:
+            Count += 1
+            CountTime = time()    
 
         if Count == 10 :
             SoundOuput()
             Count = 0
-        
  
     except RuntimeError as error:
         print(error.args[0])
