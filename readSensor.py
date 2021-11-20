@@ -42,9 +42,9 @@ while True:
                     temperature_f, temperature_c, humidity, Count
                 )
             )
-            print ("Full Spectrum(IR + Visible) :%d lux" %spectrum)
-            print ("Infrared Value :%d lux" %Infrared)
-            print ("Visible Value :%d lux" %visible)
+            print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
+            print (f"Infrared Value : {Infrared} lux")
+            print (f"Visible Value : {visible} lux")
 
         if Count == 5 :
             SoundOuput()
