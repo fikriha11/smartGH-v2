@@ -31,9 +31,10 @@ while True:
 
         if(time() - luxTime) > 5:
             global spectrum, Infrared, visible
-            # spectrum = readLux()[0]
-            # Infrared = readLux()[1]
-            # visible  = readLux()[2]
+            spectrum = readLux()[0]
+            Infrared = readLux()[1]
+            visible  = readLux()[2]
+            luxTime = time()
         
         if(time() - printTime) >= 1:
 
@@ -42,12 +43,13 @@ while True:
                     temperature_f, temperature_c, humidity, Count
                 )
             )
-            # print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
-            # print (f"Infrared Value : {Infrared} lux")
-            # print (f"Visible Value : {visible} lux")
+            print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
+            print (f"Infrared Value : {Infrared} lux")
+            print (f"Visible Value : {visible} lux")
             Count += 1
+            printTime = time()
 
-        if Count == 5 :
+        if Count == 10 :
             SoundOuput()
             Count = 0
         
