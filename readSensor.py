@@ -11,8 +11,13 @@ printTime = time()
 dhtDevice = adafruit_dht.DHT22(board.D23, use_pulseio=False)
 Count = 0
 
-global temperature_c, humidity
-global spectrum, Infrared, visible
+# var Sensor
+temperature_c = 0
+humidity = 0
+emperature_f = 0 
+spectrum = 0
+Infrared = 0
+visible = 0
 
 def SoundOuput():
     output(
