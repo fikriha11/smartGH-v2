@@ -31,4 +31,4 @@ def readLux():
         return spectrum, infrared, Visible 
 
     except Exception as error:
-        print(error)
+        # print(error)

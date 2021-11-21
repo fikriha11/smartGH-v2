@@ -28,7 +28,7 @@ def SoundOuput():
         "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen".
         format(
             temperature_c, humidity
-        )
+        ) + "Untuk Keterangan Cahaya, adalah Sebesar {} Lumen, Terima Kasih".format(spectrum)
     )
 
 
@@ -67,7 +67,7 @@ while True:
         sleep(1)
 
     except RuntimeError as error:
-        print(error.args[0])
+        # print(error.args[0])
         sleep(2.0)
         continue
     except Exception as error:
