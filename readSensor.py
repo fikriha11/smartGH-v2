@@ -14,7 +14,7 @@ Count = 0
 # var Sensor
 temperature_c = 0
 humidity = 0
-temperature_f = 0 
+temperature_f = 0
 spectrum = 0
 Infrared = 0
 visible = 0
@@ -22,11 +22,12 @@ visible = 0
 # boolean
 Sound = True
 
+
 def SoundOuput():
     output(
-    "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen".
-    format(
-        temperature_c, humidity
+        "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen".
+        format(
+            temperature_c, humidity
         )
     )
 
@@ -43,9 +44,9 @@ while True:
 
             spectrum = readLux()[0]
             Infrared = readLux()[1]
-            visible  = readLux()[2]
+            visible = readLux()[2]
             luxTime = time()
-        
+
         if(time() - printTime) >= 1:
 
             print(
@@ -53,12 +54,12 @@ while True:
                     temperature_f, temperature_c, humidity, Count
                 )
             )
-            print (f"Full Spectrum(IR + Visible) : {spectrum} lux")
-            print (f"Infrared Value : {Infrared} lux")
-            print (f"Visible Value : {visible} lux")
+            print(f"Full Spectrum(IR + Visible) : {spectrum} lux")
+            print(f"Infrared Value : {Infrared} lux")
+            print(f"Visible Value : {visible} lux")
             printTime = time()
 
-        if Count == 10 :
+        if Count == 10:
             SoundOuput()
             Count = 0
 
@@ -72,4 +73,3 @@ while True:
     except Exception as error:
         dhtDevice.exit()
         raise error
-    
