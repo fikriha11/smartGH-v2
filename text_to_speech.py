@@ -1,22 +1,16 @@
 from gtts import gTTS
-from pygame import error, mixer
+from pydub import AudioSegment
+from pydub.playback import play
 
-def output (phrase):
-    try :
+
+def output(phrase):
+    try:
         language = 'id'
-        output = gTTS(text=phrase, lang=language, slow=False)   
-        output.save('temp.mp3')
-        mixer.init()    
-        mixer.music.load("temp.mp3")
-        mixer.music.set_volume(1)
-        mixer.music.play()
-        while mixer.music.get_busy() == True:
-            continue
-        mixer.music.stop()
+        output = gTTS(text=phrase, lang=language, slow=False)
+        output.save('temp.wav')
+
+        song = AudioSegment.from_mp3('temp.wav')
+        play(song)
         return True
     except Exception as error:
-        print(error)    
-    
-
-
-
+        print(error)

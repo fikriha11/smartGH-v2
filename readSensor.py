@@ -15,9 +15,7 @@ Count = 0
 temperature_c = 0
 humidity = 0
 temperature_f = 0
-spectrum = 0
-Infrared = 0
-visible = 0
+LuxValue = 0
 
 # boolean
 Sound = True
@@ -25,10 +23,10 @@ Sound = True
 
 def SoundOuput():
     output(
-        "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen".
+        "Selamat datang, Kondisi Suhu ruangan sekarang adalah {} derajat Celcius, dan Kelembapan Sebesar {} Persen.".
         format(
             temperature_c, humidity
-        ) + "Untuk Keterangan Cahaya, adalah Sebesar {} Lumen, Terima Kasih".format(spectrum)
+        ) + "Untuk Keterangan Cahaya, adalah Sebesar {} Lumen, Terima Kasih".format(LuxValue)
     )
 
 
@@ -42,9 +40,7 @@ while True:
 
         if(time() - luxTime) > 5:
 
-            spectrum = readLux()[0]
-            Infrared = readLux()[1]
-            visible = readLux()[2]
+            LuxValue = readLux()
             luxTime = time()
 
         if(time() - printTime) >= 1:
@@ -54,9 +50,7 @@ while True:
                     temperature_f, temperature_c, humidity, Count
                 )
             )
-            print(f"Full Spectrum(IR + Visible) : {spectrum} lux")
-            print(f"Infrared Value : {Infrared} lux")
-            print(f"Visible Value : {visible} lux")
+            print(f"Lux Meter : {LuxValue} lux")
             printTime = time()
 
         if Count == 10:
