@@ -7,7 +7,7 @@ from pydub.playback import play
 from time import sleep, time
 
 SoundTime = time()
-dhtDevice = adafruit_dht.DHT22(board.D25, use_pulseio=False)
+dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 
 def soundOutput():
@@ -66,6 +66,6 @@ def ReadSensor():
 
 while True:
     ReadSensor()
-    if(time() - SoundTime) > 30:
-        soundOutput()
-        SoundTime = time()
+    # if(time() - SoundTime) > 30:
+    #     soundOutput()
+    #     SoundTime = time()
