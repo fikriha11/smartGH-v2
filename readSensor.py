@@ -1,13 +1,29 @@
 import board
 import smbus
 import adafruit_dht
+import time
+import picamera
 from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
-from time import sleep, time
 
 SoundTime = time()
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
+camera = picamera.PiCamera()
+
+
+def TakeCamera():
+    camera.resolution = (320, 240)
+    camera.rotation = 180
+    camera.start_preview()
+    time.sleep(0.5)
+    camera.capture('example.jpg')
+    camera.stop_preview()
+
+    with open("example.jpg", "rb") as img_file:
+        Image = base64.b64encode(img_file.read())
+
+    return Image
 
 
 def soundOutput():
@@ -30,7 +46,7 @@ def readLux():
         bus = smbus.SMBus(1)
         bus.write_byte_data(0x39, 0x00 | 0x80, 0x03)
         bus.write_byte_data(0x39, 0x01 | 0x80, 0x02)
-        sleep(0.5)
+        time.sleep(0.5)
         data = bus.read_i2c_block_data(0x39, 0x0C | 0x80, 2)
         lux = data[1] * 256 + data[0]
         return True
@@ -66,6 +82,7 @@ def ReadSensor():
 
 while True:
     ReadSensor()
-    # if(time() - SoundTime) > 30:
-    #     soundOutput()
-    #     SoundTime = time()
+    if(time() - SoundTime) > 30:
+        # soundOutput()
+        print(TakeCamera())
+        SoundTime = time()
