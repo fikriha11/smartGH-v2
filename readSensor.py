@@ -82,6 +82,6 @@ def ReadSensor():
 
 while True:
     ReadSensor()
-    if(time() - SoundTime) > 30:
+    if(time.time() - SoundTime) > 30:
         soundOutput()
-        SoundTime = time()
+        SoundTime = time.time()
