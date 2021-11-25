@@ -7,7 +7,7 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 
-SoundTime = time()
+SoundTime = time.time()
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 camera = picamera.PiCamera()
 
