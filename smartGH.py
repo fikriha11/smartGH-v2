@@ -35,8 +35,6 @@ def realtime():
     time.sleep(0.5)
     camera.capture('example.jpg')
     camera.stop_preview()
-    readDHT()
-    readLux()
     with open("example.jpg", "rb") as img_file:
         Image = base64.b64encode(img_file.read())
 
@@ -115,6 +113,8 @@ def mainloop():
 while True:
     response = os.system("ping -c3 " + hostname)
     if response == 0:
+        readDHT()
+        readLux()
         mainloop()
     else:
         print("Device not connected to internet")
