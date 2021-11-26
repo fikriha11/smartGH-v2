@@ -103,12 +103,12 @@ def mainloop():
     global SoundTime
     if menit != dt.now().minute:
         flag += 1
-        if flag == 1:
+        if flag == 2:
             realtime()
-        if flag > 1:
+        if flag > 2:
             flag = 0
         menit = dt.now().minute
-    if (time.time() - SoundTime) > 10:
+    if (time.time() - SoundTime) > 30:
         soundOutput()
         SoundTime = time.time()
 
