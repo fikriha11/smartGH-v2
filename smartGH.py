@@ -55,7 +55,7 @@ def realtime():
 
 def soundOutput():
     try:
-        phrase = f"Selamat datang, Kondisi Suhu ruangan sekarang adalah {round(cTemp)} derajat Celcius, dan Kelembapan udara mencapai {round(humidity)} Persen."
+        phrase = f"Selamat datang, Kondisi Suhu ruangan sekarang adalah {int(cTemp)} derajat Celcius, dan Kelembapan udara mencapai {int(humidity)} Persen."
         phrase1 = f"Untuk Keterangan Cahaya Sebesar {lux} Lumen, Terima Kasih"
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
