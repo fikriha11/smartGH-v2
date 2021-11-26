@@ -19,7 +19,6 @@ url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
 menit = 0
-jam = 0
 flag = 0
 
 SoundTime = time.time()
@@ -101,6 +100,7 @@ def readDHT():
 def mainloop():
     global menit
     global flag
+    global SoundTime
     if menit != dt.now().minute:
         flag += 1
         if flag == 2:
