@@ -29,7 +29,6 @@ datenow = dt.now().strftime("%Y-%m-%d")
 
 
 def realtime():
-    camera.resolution()
     camera.resolution = (320, 240)
     camera.rotation = 180
     camera.start_preview()
