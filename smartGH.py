@@ -22,6 +22,7 @@ menit = 0
 flag = 0
 
 SoundTime = time.time()
+timeSensor = time.time()
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 camera = picamera.PiCamera()
 hostname = "8.8.8.8"
@@ -94,6 +95,14 @@ def readDHT():
         print("Sensor DHT error")
 
 
+def readSensor():
+    global timeSensor
+    if (time.time() - timeSensor) > 5:
+        readLux()
+        readDHT()
+        timeSensor = time.time()
+
+
 def mainloop():
     global menit
     global flag
@@ -113,8 +122,7 @@ def mainloop():
 while True:
     response = os.system("ping -c3 " + hostname)
     if response == 0:
-        readDHT()
-        readLux()
+        readSensor()
         mainloop()
     else:
         print("Device not connected to internet")
