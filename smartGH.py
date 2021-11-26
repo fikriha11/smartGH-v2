@@ -43,7 +43,6 @@ def realtime():
     headers = {}
     headers['Content-Type'] = 'application/x-www-form-urlencoded'
     files = urllib.parse.urlencode({
-        'ppm': 0,
         'lumen': int(lux),
         'temp': int(cTemp),
         'humid': int(humidity),
