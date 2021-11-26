@@ -3,28 +3,19 @@ import smbus
 import adafruit_dht
 import time
 import picamera
-import sys
 import urllib.request
 import urllib.parse
-import json
-import ast
-import struct
 import base64
 import os
 import time
-import threading
-import math
-import subprocess
-import logging
 import picamera
 import smbus
-import time
 from datetime import datetime as dt
 from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 
-url = "https://smartghsip.belajarobot.com/sensor/insert/1"
+url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
 menit = 0
@@ -52,11 +43,8 @@ def realtime():
         Image = base64.b64encode(img_file.read())
 
     headers = {}
-    # headers['Content-Type'] = 'application/json'
     headers['Content-Type'] = 'application/x-www-form-urlencoded'
     files = urllib.parse.urlencode({
-        # 'api':api_key,
-        # 'id':'0001',
         'lumen': int(lux),
         'temp': int(cTemp),
         'humid': int(humidity),
