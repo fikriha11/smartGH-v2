@@ -60,9 +60,10 @@ def soundOutput():
         phrase1 = f"Untuk Keterangan Cahaya Sebesar {lux} Lumen, Terima Kasih"
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
-        output.save('temp.wav')
-        song = AudioSegment.from_mp3('temp.wav')
-        play(song)
+        output.save('temp.mp3')
+        os.system("mpg123 temp.mp3")
+        # song = AudioSegment.from_mp3('temp.wav')
+        # play(song)
         return True
     except Exception as error:
         print("SoundOutput Error")
