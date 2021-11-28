@@ -121,6 +121,7 @@ def mainloop():
     global menit
     global flag
     global SoundTime
+    global button
     if menit != dt.now().minute:
         flag += 1
         if flag == 2:
