@@ -60,7 +60,7 @@ def soundOutput():
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
         output.save('temp.mp3')
-        os.system("mpg123 temp.mp3")
+        os.system("mpg123-pulse temp.mp3")
         return True
     except Exception as error:
         print("SoundOutput Error")
