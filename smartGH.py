@@ -1,7 +1,6 @@
 import board
 import smbus
 import adafruit_dht
-import time
 import picamera
 import urllib.request
 import urllib.parse
@@ -10,6 +9,7 @@ import os
 import time
 import picamera
 import smbus
+import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 from pydub import AudioSegment
@@ -20,22 +20,22 @@ api_key = "a1ffqsVcx45IuG"
 
 menit = 0
 flag = 0
+button = False
 
-SoundTime = time.time()
-timeSensor = time.time()
+ButtonPin = 23
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(ButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
-camera = picamera.PiCamera()
+
 hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
+SoundTime = time.time()
+timeSensor = time.time()
 
 
 def realtime():
-    camera.resolution = (320, 240)
-    camera.rotation = 180
-    camera.start_preview()
-    time.sleep(0.5)
-    camera.capture('example.jpg')
-    camera.stop_preview()
+    takePicture()
     with open("example.jpg", "rb") as img_file:
         Image = base64.b64encode(img_file.read())
 
@@ -52,6 +52,20 @@ def realtime():
         print(send_image.read())
     except:
         print("post image bermasalah!")
+
+
+def takePicture():
+    camera = picamera.PiCamera()
+    time.sleep(0.5)
+    try:
+        camera.resolution = (320, 240)
+        camera.rotation = 180
+        camera.start_preview()
+        time.sleep(0.5)
+        camera.capture('example.jpg')
+        camera.stop_preview()
+    finally:
+        camera.close()
 
 
 def soundOutput():
@@ -114,9 +128,14 @@ def mainloop():
         if flag > 2:
             flag = 0
         menit = dt.now().minute
-    if (time.time() - SoundTime) > 30:
+
+    # statement switch
+    print(GPIO.input(ButtonPin))
+    if GPIO.input(ButtonPin) == GPIO.HIGH:
+        button = True
+    if button:
         soundOutput()
-        SoundTime = time.time()
+        button = False
 
 
 while True:
