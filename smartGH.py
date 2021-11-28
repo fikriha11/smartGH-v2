@@ -12,7 +12,8 @@ import picamera
 import smbus
 from datetime import datetime as dt
 from gtts import gTTS
-
+from pydub import AudioSegment
+from pydub.playback import play
 
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
@@ -60,7 +61,9 @@ def soundOutput():
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
         output.save('temp.mp3')
-        os.system("mpg123-pulse temp.mp3")
+        # os.system("mpg123 temp.mp3")
+        song = AudioSegment.from_mp3('temp.wav')
+        play(song)
         return True
     except Exception as error:
         print("SoundOutput Error")
