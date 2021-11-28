@@ -24,7 +24,7 @@ button = False
 
 ButtonPin = 23
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(ButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
@@ -130,8 +130,8 @@ def mainloop():
         menit = dt.now().minute
 
     # statement switch
-    print(GPIO.input(ButtonPin))
-    if GPIO.input(ButtonPin) == GPIO.HIGH:
+    print("Value Switch: {}".format(GPIO.input(ButtonPin)))
+    if GPIO.input(ButtonPin) == GPIO.LOW:
         button = True
     if button:
         soundOutput()
