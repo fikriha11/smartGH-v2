@@ -25,7 +25,7 @@ button = False
 ButtonPin = 23
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(ButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(ButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
