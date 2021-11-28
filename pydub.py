@@ -61,7 +61,7 @@ def soundOutput():
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
         output.save('temp.mp3')
-        song = AudioSegment.from_mp3('temp.wav')
+        song = AudioSegment.from_mp3('temp.mp3')
         play(song)
         return True
     except Exception as error:
