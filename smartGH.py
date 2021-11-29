@@ -106,10 +106,6 @@ def readDHT():
         print("Sensor DHT error")
 
 
-def readSensor():
-    global timeSensor
-
-
 def mainloop():
     global menit
     global flag
