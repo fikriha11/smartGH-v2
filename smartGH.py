@@ -111,10 +111,6 @@ def readDHT():
 
 def readSensor():
     global timeSensor
-    if (time.time() - timeSensor) > 5:
-        readLux()
-        readDHT()
-        timeSensor = time.time()
 
 
 def mainloop():
@@ -122,6 +118,8 @@ def mainloop():
     global flag
     global SoundTime
     global button
+    global timeSensor
+
     if menit != dt.now().minute:
         flag += 1
         if flag == 2:
@@ -129,6 +127,12 @@ def mainloop():
         if flag > 2:
             flag = 0
         menit = dt.now().minute
+
+    # Update Sensor
+    if (time.time() - timeSensor) > 5:
+        readLux()
+        readDHT()
+        timeSensor = time.time()
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(ButtonPin)))
@@ -142,7 +146,6 @@ def mainloop():
 while True:
     response = os.system("ping -c3 " + hostname)
     if response == 0:
-        readSensor()
         mainloop()
     else:
         print("Device not connected to internet")
