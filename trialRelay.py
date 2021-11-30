@@ -112,8 +112,10 @@ def readDHT():
 def mainloop():
     print("Value Switch: {}".format(GPIO.input(ButtonPin)))
     if GPIO.input(ButtonPin) == GPIO.LOW:
+        print("Mati")
         GPIO.output(RelayPIn, GPIO.LOW)
     else:
+        print("HIDUP")
         GPIO.output(RelayPIn, GPIO.HIGH)
 
 
