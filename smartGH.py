@@ -130,9 +130,9 @@ def mainloop():
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(ButtonPin)))
-    if GPIO.input(ButtonPin) == GPIO.LOW:
-        state = True
     if GPIO.input(ButtonPin) == GPIO.HIGH:
+        state = True
+    if GPIO.input(ButtonPin) == GPIO.LOW:
         state = lastState = False
     if state != lastState:
         os.system("mpg123 temp.mp3")
