@@ -13,8 +13,6 @@ import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 
-from trialRelay import SwitchPin
-
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
