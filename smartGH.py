@@ -18,7 +18,6 @@ api_key = "a1ffqsVcx45IuG"
 
 menit = dt.now().minute
 detik = dt.now().second
-flag = 0
 state = False
 lastState = False
 
@@ -38,6 +37,8 @@ hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
 SoundTime = time.time()
 timeSensor = time.time()
+
+cTemp = fTemp = lux = 0
 
 
 def realtime():
@@ -116,16 +117,11 @@ def readDHT():
 def mainloop():
     global menit
     global detik
-    global flag
     global lastState
 
     # update Database every 3 minute
-    if menit != dt.now().minute:
-        flag += 1
-        if flag == 2:
-            realtime()
-        if flag > 2:
-            flag = 0
+    if (dt.now().minute - menit) >= 3:
+        realtime()
         menit = dt.now().minute
 
     # Update Sensor every 30 seconds
