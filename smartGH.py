@@ -16,8 +16,8 @@ from gtts import gTTS
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
-menit = 0
-detik = 0
+menit = dt.now().minute
+detik = dt.now().second
 flag = 0
 state = False
 lastState = False
