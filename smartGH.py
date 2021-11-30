@@ -38,7 +38,7 @@ datenow = dt.now().strftime("%Y-%m-%d")
 SoundTime = time.time()
 timeSensor = time.time()
 
-cTemp = fTemp = lux = 0
+cTemp = humidity = lux = 0
 
 
 def realtime():
