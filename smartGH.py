@@ -13,18 +13,27 @@ import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 
+from trialRelay import SwitchPin
+
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
 menit = 0
+detik = 0
 flag = 0
 state = False
 lastState = False
 
-ButtonPin = 23
+SwitchPin = 23
+RelayPIn = 24
+RelayPIn1 = 25
+
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(ButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(SwitchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(RelayPIn, GPIO.OUT)
+GPIO.setup(RelayPIn1, GPIO.OUT)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
@@ -108,11 +117,11 @@ def readDHT():
 
 def mainloop():
     global menit
+    global detik
     global flag
-    global SoundTime
     global lastState
-    global timeSensor
 
+    # update Database every 3 minute
     if menit != dt.now().minute:
         flag += 1
         if flag == 2:
@@ -121,18 +130,18 @@ def mainloop():
             flag = 0
         menit = dt.now().minute
 
-    # Update Sensor
-    if (time.time() - timeSensor) > 30:
+    # Update Sensor every 30 seconds
+    if (dt.now().second - detik) >= 30:
         readLux()
         readDHT()
         TextToSpeech()
-        timeSensor = time.time()
+        detik = dt.now().second
 
     # statement switch
-    print("Value Switch: {}".format(GPIO.input(ButtonPin)))
-    if GPIO.input(ButtonPin) == GPIO.HIGH:
+    print("Value Switch: {}".format(GPIO.input(SwitchPin)))
+    if GPIO.input(SwitchPin) == GPIO.HIGH:
         state = True
-    if GPIO.input(ButtonPin) == GPIO.LOW:
+    if GPIO.input(SwitchPin) == GPIO.LOW:
         state = lastState = False
     if state != lastState:
         os.system("mpg123 temp.mp3")
