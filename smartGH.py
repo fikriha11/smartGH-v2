@@ -18,7 +18,8 @@ api_key = "a1ffqsVcx45IuG"
 
 menit = 0
 flag = 0
-button = False
+state = False
+lastState = False
 
 ButtonPin = 23
 GPIO.setwarnings(False)
@@ -66,14 +67,13 @@ def takePicture():
         camera.close()
 
 
-def soundOutput():
+def TextToSpeech():
     try:
         phrase = f"Selamat datang, Kondisi Suhu ruangan sekarang adalah {int(cTemp)} derajat Celcius, dan Kelembapan udara mencapai {int(humidity)} Persen."
         phrase1 = f"Untuk Keterangan Cahaya Sebesar {lux} Lumen, Terima Kasih"
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
         output.save('temp.mp3')
-        os.system("mpg123 temp.mp3")
         return True
     except Exception as error:
         print("SoundOutput Error")
@@ -110,7 +110,7 @@ def mainloop():
     global menit
     global flag
     global SoundTime
-    global button
+    global lastState
     global timeSensor
 
     if menit != dt.now().minute:
@@ -122,18 +122,21 @@ def mainloop():
         menit = dt.now().minute
 
     # Update Sensor
-    if (time.time() - timeSensor) > 5:
+    if (time.time() - timeSensor) > 30:
         readLux()
         readDHT()
+        TextToSpeech()
         timeSensor = time.time()
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(ButtonPin)))
     if GPIO.input(ButtonPin) == GPIO.LOW:
-        button = True
-    if button:
-        soundOutput()
-        button = False
+        state = True
+    if GPIO.input(ButtonPin) == GPIO.HIGH:
+        state = lastState = False
+    if state != lastState:
+        os.system("mpg123 temp.mp3")
+        lastState = state
 
 
 while True:
