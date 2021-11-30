@@ -77,7 +77,17 @@ def takePicture():
 
 def TextToSpeech():
     try:
-        phrase = f"Selamat datang, Kondisi Suhu ruangan sekarang adalah {int(cTemp)} derajat Celcius, dan Kelembapan udara mencapai {int(humidity)} Persen."
+
+        if dt.now().hour > 5 and dt.now().hour <= 10:
+            waktu = "Pagi"
+        elif dt.now().hour > 10 and dt.now().hour <= 14:
+            waktu = "Siang"
+        elif dt.now().hour > 14 and dt.now().hour < 17:
+            waktu = "Sore"
+        else:
+            waktu = "Datang"
+
+        phrase = f"Selamat{waktu}, Kondisi Suhu saat ini adalah {int(cTemp)} derajat Celcius, dan Kelembapan udara mencapai {int(humidity)} Persen."
         phrase1 = f"Untuk Keterangan Cahaya Sebesar {lux} Lumen, Terima Kasih"
         language = 'id'
         output = gTTS(text=phrase + phrase1, lang=language, slow=False)
