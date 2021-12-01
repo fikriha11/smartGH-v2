@@ -31,6 +31,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(SwitchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(RelayPIn, GPIO.OUT)
 GPIO.setup(RelayPIn1, GPIO.OUT)
+GPIO.output(RelayPIn, GPIO.HIGH)
+GPIO.output(RelayPIn1, GPIO.HIGH)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
@@ -143,18 +145,16 @@ def mainloop():
     if GPIO.input(SwitchPin) == GPIO.HIGH:
         state = True
     if GPIO.input(SwitchPin) == GPIO.LOW:
-        GPIO.output(RelayPIn, GPIO.HIGH)
         state = lastState = False
     if state != lastState:
-        GPIO.output(RelayPIn, GPIO.LOW)
         os.system("mpg123 temp.mp3")
         lastState = state
 
     #  Control Temperatur
-    # if lux >= 36:
-    #     GPIO.output(RelayPIn, GPIO.LOW)
-    # if lux <= 34:
-    #     GPIO.output(RelayPIn, GPIO.HIGH)
+    if lux >= 36:
+        GPIO.output(RelayPIn, GPIO.LOW)
+    if lux <= 34:
+        GPIO.output(RelayPIn, GPIO.HIGH)
 
 
 while True:
