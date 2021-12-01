@@ -115,7 +115,7 @@ def readDHT():
         cTemp = dhtDevice.temperature
         fTemp = cTemp * (9 / 5) + 32
         humidity = dhtDevice.humidity
-        print("Temp: {} dan Hum: {}".format(cTemp, fTemp))
+        print("Temp: {} dan Hum: {}".format(cTemp, humidity))
         return True
     except Exception as error:
         print("Sensor DHT error")
@@ -132,11 +132,11 @@ def mainloop():
         menit = dt.now().minute
 
     # Update Sensor every 30 seconds
-    if (dt.now().second - detik) >= 5:
+    if (time.time() - detik) >= 30:
         readLux()
         readDHT()
         TextToSpeech()
-        detik = dt.now().second
+        detik = time.time()
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
