@@ -151,9 +151,9 @@ def mainloop():
         lastState = state
 
     #  Control Temperatur
-    if lux >= 36:
+    if cTemp >= 36:
         GPIO.output(RelayPIn, GPIO.LOW)
-    if lux <= 34:
+    if cTemp <= 34:
         GPIO.output(RelayPIn, GPIO.HIGH)
 
 
