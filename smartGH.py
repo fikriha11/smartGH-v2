@@ -37,7 +37,6 @@ dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
-cTemp = humidity = lux = 0
 
 
 def realtime():
@@ -157,6 +156,11 @@ def mainloop():
     if cTemp <= 34:
         GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
 
+
+# Inisialisasi
+readLux()
+readDHT()
+TextToSpeech()
 
 while True:
     response = os.system("ping -c3 " + hostname)
