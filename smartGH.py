@@ -147,14 +147,15 @@ def mainloop():
     if GPIO.input(SwitchPin) == GPIO.LOW:
         state = lastState = False
     if state != lastState:
+        time.sleep(3)
         os.system("mpg123 temp.mp3")
         lastState = state
 
     #  Control Temperatur
     if cTemp >= 36:
-        GPIO.output(RelayPIn, GPIO.LOW)
+        GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
     if cTemp <= 34:
-        GPIO.output(RelayPIn, GPIO.HIGH)
+        GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
 
 
 while True:
