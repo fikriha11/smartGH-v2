@@ -1,6 +1,8 @@
 from datetime import datetime as dt
 
-time = dt.now().hour
+detik = dt.now().second
 
 while True:
-    print(time)
+    if (dt.now().second - detik) >= 5:
+        print("Hello")
+        detik = dt.now().second

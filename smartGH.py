@@ -16,8 +16,8 @@ from gtts import gTTS
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
-menit = dt.now().minute
-detik = dt.now().second
+menit = 0
+detik = 0
 state = False
 lastState = False
 
@@ -35,9 +35,6 @@ dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
-SoundTime = time.time()
-timeSensor = time.time()
-
 cTemp = humidity = lux = 0
 
 
@@ -135,7 +132,7 @@ def mainloop():
         menit = dt.now().minute
 
     # Update Sensor every 30 seconds
-    if (dt.now().second - detik) >= 30:
+    if (dt.now().second - detik) >= 5:
         readLux()
         readDHT()
         TextToSpeech()
@@ -150,6 +147,12 @@ def mainloop():
     if state != lastState:
         os.system("mpg123 temp.mp3")
         lastState = state
+
+    #  Control Temperatur
+    if lux >= 36:
+        GPIO.output(RelayPIn, GPIO.LOW)
+    if lux <= 34:
+        GPIO.output(RelayPIn, GPIO.HIGH)
 
 
 while True:
