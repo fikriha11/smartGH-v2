@@ -81,7 +81,7 @@ def TextToSpeech():
         elif dt.now().hour > 10 and dt.now().hour <= 14:
             waktu = "Siang"
         elif dt.now().hour > 14 and dt.now().hour < 17:
-            waktu = "Sore"
+            waktu = "Soree"
         else:
             waktu = "Datang"
 
