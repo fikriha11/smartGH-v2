@@ -20,6 +20,7 @@ menit = 0
 detik = 0
 state = False
 lastState = False
+flag = False
 
 SwitchPin = 23
 RelayPIn = 24
@@ -146,7 +147,7 @@ def mainloop():
     if GPIO.input(SwitchPin) == GPIO.LOW:
         state = lastState = False
     if state != lastState:
-        time.sleep(3)
+        time.sleep(1)
         os.system("mpg123 temp.mp3")
         lastState = state
 
@@ -161,10 +162,17 @@ def mainloop():
 readLux()
 readDHT()
 TextToSpeech()
+time.sleep(2)
+os.system("mpg123 VoiceReady.mp3")
 
 while True:
     response = os.system("ping -c3 " + hostname)
     if response == 0:
         mainloop()
+        if(flag):
+            os.system("mpg123 VoiceConnect.mp3")
+            flag = False
     else:
-        print("Device not connected to internet")
+        os.system("mpg123 VoiceDisconnect.mp3")
+        flag = True
+        time.sleep(20)
