@@ -51,9 +51,9 @@ def realtime():
 
 
 def takePicture():
-    camera = picamera.PiCamera()
-    time.sleep(0.5)
     try:
+        camera = picamera.PiCamera()
+        time.sleep(0.5)
         camera.resolution = (320, 240)
         camera.rotation = 180
         camera.start_preview()
