@@ -26,6 +26,8 @@ SwitchPin = 23
 RelayPIn = 24
 RelayPIn1 = 25
 
+cTemp = lux = humidity = 0
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -162,7 +164,7 @@ def mainloop():
 readLux()
 readDHT()
 TextToSpeech()
-time.sleep(2)
+time.sleep(3)
 os.system("mpg123 VoiceReady.mp3")
 
 while True:
