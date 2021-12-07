@@ -47,7 +47,8 @@ def JamKipas():
 
 
 def realtime():
-    takePicture()
+    # takePicture()
+    pass
 
 
 def takePicture():
