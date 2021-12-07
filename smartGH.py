@@ -42,6 +42,13 @@ hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
 
 
+def JamKipas():
+    if dt.now().hour < 17 and dt.now().hour >= 7:
+        return True
+    else:
+        return False
+
+
 def realtime():
     takePicture()
     with open("example.jpg", "rb") as img_file:
@@ -154,9 +161,9 @@ def mainloop():
         lastState = state
 
     #  Control Temperatur
-    if cTemp >= 36:
+    if cTemp >= 36 and JamKipas():
         GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
-    if cTemp <= 34:
+    if cTemp <= 34 or JamKipas() == False:
         GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
 
 
