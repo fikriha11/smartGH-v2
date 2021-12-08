@@ -21,6 +21,7 @@ detik = 0
 state = False
 lastState = False
 flag = False
+flag1 = 0
 
 SwitchPin = 23
 RelayPIn = 24
@@ -136,10 +137,15 @@ def mainloop():
     global menit
     global detik
     global lastState
+    global flag1
 
     # update Database every 3 minute
-    while (dt.now().minute - menit) >= 3:
-        realtime()
+    if menit != dt.now().minute:
+        flag1 += 1
+        if flag1 == 2:
+            realtime()
+        if flag1 > 2:
+            flag1 = 0
         menit = dt.now().minute
 
     # Update Sensor every 30 seconds
