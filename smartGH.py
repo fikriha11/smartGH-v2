@@ -43,7 +43,7 @@ datenow = dt.now().strftime("%Y-%m-%d")
 
 
 def JamKipas():
-    if dt.now().hour < 17 and dt.now().hour >= 7:
+    if dt.now().hour <= 17 and dt.now().hour >= 7:
         return True
     else:
         return False
@@ -138,7 +138,7 @@ def mainloop():
     global lastState
 
     # update Database every 3 minute
-    if (dt.now().minute - menit) >= 3:
+    while (dt.now().minute - menit) >= 3:
         realtime()
         menit = dt.now().minute
 

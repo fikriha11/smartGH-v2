@@ -40,7 +40,7 @@ datenow = dt.now().strftime("%Y-%m-%d")
 
 
 def JamKipas():
-    if dt.now().hour < 17 and dt.now().hour >= 7:
+    if dt.now().hour <= 17 and dt.now().hour >= 7:
         return True
     else:
         return False
