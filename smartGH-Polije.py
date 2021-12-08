@@ -24,7 +24,7 @@ flag = False
 flag1 = 0
 
 SwitchPin = 23
-RelayPIn = 24
+RelayPIn = 14
 RelayPIn1 = 25
 
 cTemp = lux = humidity = 0
@@ -134,7 +134,7 @@ def readSHT():
         cTemp = -45 + (175 * temp / 65535.0)
         fTemp = -49 + (315 * temp / 65535.0)
         humidity = 100 * (data[3] * 256 + data[4]) / 65535.0
-        print("Temp: {} dan Hum: {}".format(cTemp, humidity))
+        print("Temp: {} dan Hum: {}".format(int(cTemp), int(humidity)))
         return True
     except Exception as error:
         print("Sensor SHT error")
