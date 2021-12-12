@@ -51,6 +51,9 @@ def JamKipas():
 
 
 def realtime():
+    readLux()
+    readDHT()
+    TextToSpeech()
     takePicture()
     with open("example.jpg", "rb") as img_file:
         Image = base64.b64encode(img_file.read())
@@ -147,13 +150,6 @@ def mainloop():
         if flag1 > 2:
             flag1 = 0
         menit = dt.now().minute
-
-    # Update Sensor every 30 seconds
-    if (time.time() - detik) >= 30:
-        readLux()
-        readDHT()
-        TextToSpeech()
-        detik = time.time()
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
