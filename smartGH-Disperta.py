@@ -13,7 +13,8 @@ import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 
-url = "https://screenhousedisperta.belajarobot.com/sensor/insert"
+# url = "https://screenhousedisperta.belajarobot.com/sensor/insert"
+url = "https://smartghsip.belajarobot.com/sensor/insert/2"
 api_key = "a1ffqsVcx45IuG"
 
 menit = 0
