@@ -158,7 +158,7 @@ def mainloop():
     # Update Sensor every 30 seconds
     if (time.time() - detik) >= 30:
         readLux()
-        readDHT()
+        readSHT()
         TextToSpeech()
         detik = time.time()
 
@@ -182,7 +182,7 @@ def mainloop():
 
 # Inisialisasi
 readLux()
-readDHT()
+readSHT()
 TextToSpeech()
 time.sleep(3)
 os.system("mpg123 VoiceReady.mp3")
