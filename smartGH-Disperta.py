@@ -24,7 +24,7 @@ flag = False
 flag1 = 0
 
 SwitchPin = 23
-RelayPIn = 14
+RelayPIn = 24
 RelayPIn1 = 25
 
 cTemp = lux = humidity = 0
@@ -158,7 +158,7 @@ def mainloop():
     # Update Sensor every 30 seconds
     if (time.time() - detik) >= 30:
         readLux()
-        readSHT()
+        readDHT()
         TextToSpeech()
         detik = time.time()
 
@@ -182,7 +182,7 @@ def mainloop():
 
 # Inisialisasi
 readLux()
-readSHT()
+readDHT()
 TextToSpeech()
 time.sleep(3)
 os.system("mpg123 VoiceReady.mp3")
