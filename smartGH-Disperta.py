@@ -200,4 +200,4 @@ while True:
     else:
         os.system("mpg123 VoiceDisconnect.mp3")
         flag = True
-        time.sleep(20)
+        time.sleep(5)

@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 
+# url = "https://smartghsip.belajarobot.com/sensor/insert/2"
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 api_key = "a1ffqsVcx45IuG"
 
@@ -186,4 +187,4 @@ while True:
     else:
         os.system("mpg123 VoiceDisconnect.mp3")
         flag = True
-        time.sleep(20)
+        time.sleep(5)
