@@ -159,13 +159,6 @@ def mainloop():
             flag1 = 0
         menit = dt.now().minute
 
-    # Update Sensor every 30 seconds
-    # if (time.time() - detik) >= 30:
-    #     readLux()
-    #     readSHT()
-    #     TextToSpeech()
-    #     detik = time.time()
-
     # statement switch
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
     if GPIO.input(SwitchPin) == GPIO.HIGH:
