@@ -74,22 +74,22 @@ def realtime():
 
 
 def takePicture():
-    camera = picamera.PiCamera()
-    time.sleep(0.5)
     try:
+        camera = picamera.PiCamera()
+        time.sleep(0.5)
         camera.resolution = (320, 240)
         camera.rotation = 180
         camera.start_preview()
         time.sleep(0.5)
         camera.capture('example.jpg')
         camera.stop_preview()
-    finally:
         camera.close()
+    except:
+        print("Camera Error")
 
 
 def TextToSpeech():
     try:
-
         if dt.now().hour > 5 and dt.now().hour <= 10:
             waktu = "Pagi"
         elif dt.now().hour > 10 and dt.now().hour <= 14:
@@ -177,13 +177,18 @@ time.sleep(3)
 os.system("mpg123 VoiceReady.mp3")
 
 while True:
-    response = os.system("ping -c3 " + hostname)
-    if response == 0:
-        mainloop()
-        if(flag):
-            os.system("mpg123 VoiceConnect.mp3")
-            flag = False
-    else:
-        os.system("mpg123 VoiceDisconnect.mp3")
-        flag = True
-        time.sleep(5)
+    try:
+        response = os.system("ping -c3 " + hostname)
+        if response == 0:
+            mainloop()
+            if(flag):
+                os.system("mpg123 VoiceConnect.mp3")
+                flag = False
+        else:
+            os.system("mpg123 VoiceDisconnect.mp3")
+            flag = True
+            time.sleep(5)
+    except RuntimeError as error:
+        print(error.args[0])
+        time.sleep(2)
+        continue
