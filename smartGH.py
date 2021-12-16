@@ -83,7 +83,6 @@ def takePicture():
         time.sleep(0.5)
         camera.capture('example.jpg')
         camera.stop_preview()
-        camera.close()
     except:
         print("Camera Error")
 
