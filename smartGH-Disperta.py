@@ -155,9 +155,9 @@ def mainloop():
     # update Database every 3 minute
     if menit != dt.now().minute:
         flag1 += 1
-        if flag1 == 9:
+        if flag1 == 2:
             realtime()
-        if flag1 > 9:
+        if flag1 > 2:
             flag1 = 0
         menit = dt.now().minute
 
