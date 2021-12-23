@@ -16,7 +16,7 @@ from gtts import gTTS
 
 url = "https://aklimatisasidisperta.belajarobot.com/sensor/insert"
 
-startTime = 0
+startTime = time.time()
 state = False
 lastState = False
 stateRelayA = True
@@ -24,8 +24,8 @@ stateRelayB = True
 flag = False
 
 SwitchPin = 23
-RelayPIn = 24
-RelayPIn1 = 25
+RelayPIn = 25
+RelayPIn1 = 24
 
 cTemp = lux = humidity = 0
 
@@ -35,8 +35,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(SwitchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(RelayPIn, GPIO.OUT)
 GPIO.setup(RelayPIn1, GPIO.OUT)
-GPIO.output(RelayPIn, GPIO.HIGH)
-GPIO.output(RelayPIn1, GPIO.HIGH)
+GPIO.output(RelayPIn, GPIO.LOW)
+GPIO.output(RelayPIn1, GPIO.LOW)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
@@ -160,20 +160,20 @@ def mainloop():
     if time.time() - startTime >= 1800:
         if dt.now().hour >= 10 and dt.now().hour <= 16:
             if lux > 2000 and stateRelayA:
-                GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
+                GPIO.output(RelayPIn, GPIO.HIGH)  # Hidup
                 os.system("mpg123 VoiceTutupAtap.mp3")
                 time.sleep(300)
-                GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
+                GPIO.output(RelayPIn, GPIO.LOW)  # Mati
                 stateRelayA = False
         startTime = time.time()
 
     # Statement Relay Jam 5 dan jam 7
     if dt.now().hour == 17 or dt.now().hour == 7:
         if stateRelayB:
-            GPIO.output(RelayPIn1, GPIO.LOW)  # Hidup
+            GPIO.output(RelayPIn1, GPIO.HIGH)  # Hidup
             os.system("mpg123 VoiceBukaAtap.mp3")
             time.sleep(300)
-            GPIO.output(RelayPIn1, GPIO.HIGH)  # Mati
+            GPIO.output(RelayPIn1, GPIO.LOW)  # Mati
             stateRelayB = False
             stateRelayA = True
     else:
