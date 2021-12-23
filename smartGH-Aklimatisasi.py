@@ -149,9 +149,9 @@ def mainloop():
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
     if GPIO.input(SwitchPin) == GPIO.HIGH:
         state = True
-    elif GPIO.input(SwitchPin) == GPIO.LOW:
+    if GPIO.input(SwitchPin) == GPIO.LOW:
         state = lastState = False
-    elif state != lastState:
+    if state != lastState:
         time.sleep(1)
         os.system("mpg123 temp.mp3")
         lastState = state

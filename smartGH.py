@@ -7,6 +7,7 @@ import urllib.parse
 import base64
 import os
 import time
+import schedule
 import picamera
 import smbus
 import RPi.GPIO as GPIO
@@ -14,9 +15,9 @@ from datetime import datetime as dt
 from gtts import gTTS
 
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
+# url = "https://hidroponikbangsal.belajarobot.com/sensor/insert"
 
-menit = 0
-detik = 0
+
 state = False
 lastState = False
 flag = False
@@ -136,19 +137,8 @@ def readDHT():
 
 
 def mainloop():
-    global menit
-    global detik
+    global state
     global lastState
-    global flag1
-
-    # update Database every 3 minute
-    if menit != dt.now().minute:
-        flag1 += 1
-        if flag1 == 9:
-            realtime()
-        if flag1 > 9:
-            flag1 = 0
-        menit = dt.now().minute
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
@@ -162,17 +152,20 @@ def mainloop():
         lastState = state
 
     #  Control Temperatur
-    if cTemp >= 36 and JamKipas():
+    if cTemp >= 30 and JamKipas():
         GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
-    if cTemp <= 34 or JamKipas() == False:
+    if cTemp <= 27 or JamKipas() == False:
         GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
+
+    schedule.run_pending()
+    time.sleep(1)
 
 
 # Inisialisasi
 readLux()
 readDHT()
 TextToSpeech()
-time.sleep(3)
+schedule.every(10).minutes.do(realtime)
 os.system("mpg123 VoiceReady.mp3")
 
 while True:
