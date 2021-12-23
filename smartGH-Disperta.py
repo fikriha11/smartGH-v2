@@ -16,15 +16,13 @@ from gtts import gTTS
 
 url = "https://screenhousedisperta.belajarobot.com/sensor/insert"
 
-menit = 0
-detik = 0
 state = False
 lastState = False
 flag = False
 flag1 = 0
 
 SwitchPin = 23
-RelayPIn = 24
+RelayPIn = 14
 RelayPIn1 = 25
 
 cTemp = lux = humidity = 0
