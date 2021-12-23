@@ -7,20 +7,21 @@ import urllib.parse
 import base64
 import os
 import time
+import schedule
 import picamera
 import smbus
 import RPi.GPIO as GPIO
 from datetime import datetime as dt
 from gtts import gTTS
 
-url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
+url = "https://aklimatisasidisperta.belajarobot.com/sensor/insert"
 
-menit = 0
-detik = 0
+startTime = 0
 state = False
 lastState = False
+stateRelayA = True
+stateRelayB = True
 flag = False
-flag1 = 0
 
 SwitchPin = 23
 RelayPIn = 24
@@ -42,16 +43,9 @@ hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
 
 
-def JamKipas():
-    if dt.now().hour <= 17 and dt.now().hour >= 7:
-        return True
-    else:
-        return False
-
-
 def realtime():
     readLux()
-    readDHT()
+    readSHT()
     TextToSpeech()
     takePicture()
     with open("example.jpg", "rb") as img_file:
@@ -83,12 +77,14 @@ def takePicture():
         camera.capture('example.jpg')
         camera.stop_preview()
         camera.close()
+
     except:
         print("Camera Error")
 
 
 def TextToSpeech():
     try:
+
         if dt.now().hour > 5 and dt.now().hour <= 10:
             waktu = "Pagi"
         elif dt.now().hour > 10 and dt.now().hour <= 14:
@@ -123,56 +119,75 @@ def readLux():
         print("Lux data error")
 
 
-def readDHT():
+def readSHT():
     global cTemp, fTemp, humidity
     try:
-        cTemp = dhtDevice.temperature
-        fTemp = cTemp * (9 / 5) + 32
-        humidity = dhtDevice.humidity
-        print("Temp: {} dan Hum: {}".format(cTemp, humidity))
+        bus = smbus.SMBus(1)
+        bus.write_i2c_block_data(0x44, 0x2C, [0x06])  # Address 0x44
+        time.sleep(0.5)
+        data = bus.read_i2c_block_data(0x44, 0x00, 6)
+
+        # Convert the data
+        temp = data[0] * 256 + data[1]
+        cTemp = -45 + (175 * temp / 65535.0)
+        fTemp = -49 + (315 * temp / 65535.0)
+        humidity = 100 * (data[3] * 256 + data[4]) / 65535.0
+        print("Temp: {} dan Hum: {}".format(int(cTemp), int(humidity)))
         return True
     except Exception as error:
-        print("Sensor DHT error")
+        print("Sensor SHT error")
 
 
 def mainloop():
-    global menit
-    global detik
+    global state
     global lastState
-    global flag1
-
-    # update Database every 3 minute
-    if menit != dt.now().minute:
-        flag1 += 1
-        if flag1 == 9:
-            realtime()
-        if flag1 > 9:
-            flag1 = 0
-        menit = dt.now().minute
+    global startTime
+    global stateRelayA
+    global stateRelayB
 
     # statement switch
     print("Value Switch: {}".format(GPIO.input(SwitchPin)))
     if GPIO.input(SwitchPin) == GPIO.HIGH:
         state = True
-    if GPIO.input(SwitchPin) == GPIO.LOW:
+    elif GPIO.input(SwitchPin) == GPIO.LOW:
         state = lastState = False
-    if state != lastState:
+    elif state != lastState:
         time.sleep(1)
         os.system("mpg123 temp.mp3")
         lastState = state
 
-    #  Control Temperatur
-    if cTemp >= 36 and JamKipas():
-        GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
-    if cTemp <= 34 or JamKipas() == False:
-        GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
+    # Statement Relay (Check Every 30 minutes)
+    if time.time() - startTime >= 1800:
+        if dt.now().hour >= 10 and dt.now().hour <= 16:
+            if lux > 2000 and stateRelayA:
+                GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
+                os.system("mpg123 VoiceTutupAtap.mp3")
+                time.sleep(300)
+                GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
+                stateRelayA = False
+        startTime = time.time()
+
+    # Statement Relay Jam 5 dan jam 7
+    if dt.now().hour == 17 or dt.now().hour == 7:
+        if stateRelayB:
+            GPIO.output(RelayPIn1, GPIO.LOW)  # Hidup
+            os.system("mpg123 VoiceBukaAtap.mp3")
+            time.sleep(300)
+            GPIO.output(RelayPIn1, GPIO.HIGH)  # Mati
+            stateRelayB = False
+            stateRelayA = True
+    else:
+        stateRelayB = True
+
+    schedule.run_pending()
+    time.sleep(1)
 
 
 # Inisialisasi
 readLux()
-readDHT()
+readSHT()
 TextToSpeech()
-time.sleep(3)
+schedule.every(3).minutes.do(realtime)
 os.system("mpg123 VoiceReady.mp3")
 
 while True:

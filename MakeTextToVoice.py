@@ -13,11 +13,11 @@ def TextToSpeech(phrase, format):
         print("SoundOutput Error")
 
 
-TextToSpeech("Moohon maaf, sistem tidak terhubung internet",
-             'VoiceConnect.mp3')
-TextToSpeech("Sistem Monitoring siap digunakan", 'VoiceReady.mp3')
-TextToSpeech("Sistem Telah Terhubung Internet Kembali", 'VoiceConnect.mp3')
+TextToSpeech("Sistem menutup atap Otomatis", "VoiceTutupAtap.mp3")
+TextToSpeech("Sistem membuka atap Otomatis", "VoiceBukaAtap.mp3")
 
 while True:
-    os.system("mpg123 VoiceConnect.mp3")
+    os.system("mpg123 VoiceTutupAtap.mp3")
     time.sleep(3)
+    os.system("mpg123 VoiceBukaAtap.mp3")
+    time.sleep(2)
