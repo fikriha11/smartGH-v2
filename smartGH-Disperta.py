@@ -37,6 +37,7 @@ GPIO.output(RelayPIn, GPIO.HIGH)
 GPIO.output(RelayPIn1, GPIO.HIGH)
 dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
+camera = picamera.PiCamera()
 hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
 
@@ -73,16 +74,12 @@ def realtime():
 
 def takePicture():
     try:
-        camera = picamera.PiCamera()
-        time.sleep(0.5)
         camera.resolution = (320, 240)
         camera.rotation = 180
         camera.start_preview()
         time.sleep(0.5)
         camera.capture('example.jpg')
         camera.stop_preview()
-        camera.close()
-
     except:
         print("Camera Error")
 
