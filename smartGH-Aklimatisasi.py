@@ -138,6 +138,20 @@ def readSHT():
         print("Sensor SHT error")
 
 
+def TutupAtap():
+    global stateRelayA
+    if dt.now().hour >= 10 and dt.now().hour <= 16:
+        readLux()
+        if lux > 5000 and stateRelayA:
+            GPIO.output(RelayPIn1, GPIO.LOW)
+            GPIO.output(RelayPIn, GPIO.HIGH)  # Hidup
+            os.system(
+                "mpg123 /home/pi/Documents/smartGH-v2/VoiceTutupAtap.mp3")
+            time.sleep(300)
+            GPIO.output(RelayPIn, GPIO.LOW)  # Mati
+            stateRelayA = False
+
+
 def mainloop():
     global state
     global lastState
@@ -156,21 +170,10 @@ def mainloop():
         os.system("mpg123 temp.mp3")
         lastState = state
 
-    # Statement Relay (Check Every 30 minutes)
-    if time.time() - startTime >= 1800:
-        if dt.now().hour >= 10 and dt.now().hour <= 16:
-            if lux > 2000 and stateRelayA:
-                GPIO.output(RelayPIn, GPIO.HIGH)  # Hidup
-                os.system(
-                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceTutupAtap.mp3")
-                time.sleep(300)
-                GPIO.output(RelayPIn, GPIO.LOW)  # Mati
-                stateRelayA = False
-        startTime = time.time()
-
-    # Statement Relay Jam 5 dan jam 7
+    # Statement Relay Jam 5 dan jam 7 (Buka Atap)
     if dt.now().hour == 17 or dt.now().hour == 7:
         if stateRelayB:
+            GPIO.output(RelayPIn, GPIO.LOW)
             GPIO.output(RelayPIn1, GPIO.HIGH)  # Hidup
             os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceBukaAtap.mp3")
             time.sleep(300)
@@ -189,6 +192,7 @@ readLux()
 readSHT()
 TextToSpeech()
 schedule.every(3).minutes.do(realtime)
+schedule.every(30).minutes.do(TutupAtap)
 os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceReady.mp3")
 
 while True:
