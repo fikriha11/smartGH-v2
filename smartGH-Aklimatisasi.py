@@ -161,7 +161,8 @@ def mainloop():
         if dt.now().hour >= 10 and dt.now().hour <= 16:
             if lux > 2000 and stateRelayA:
                 GPIO.output(RelayPIn, GPIO.HIGH)  # Hidup
-                os.system("mpg123 VoiceTutupAtap.mp3")
+                os.system(
+                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceTutupAtap.mp3")
                 time.sleep(300)
                 GPIO.output(RelayPIn, GPIO.LOW)  # Mati
                 stateRelayA = False
@@ -171,7 +172,7 @@ def mainloop():
     if dt.now().hour == 17 or dt.now().hour == 7:
         if stateRelayB:
             GPIO.output(RelayPIn1, GPIO.HIGH)  # Hidup
-            os.system("mpg123 VoiceBukaAtap.mp3")
+            os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceBukaAtap.mp3")
             time.sleep(300)
             GPIO.output(RelayPIn1, GPIO.LOW)  # Mati
             stateRelayB = False
@@ -188,7 +189,7 @@ readLux()
 readSHT()
 TextToSpeech()
 schedule.every(3).minutes.do(realtime)
-os.system("mpg123 VoiceReady.mp3")
+os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceReady.mp3")
 
 while True:
     try:
@@ -196,10 +197,11 @@ while True:
         if response == 0:
             mainloop()
             if(flag):
-                os.system("mpg123 VoiceConnect.mp3")
+                os.system(
+                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceConnect.mp3")
                 flag = False
         else:
-            os.system("mpg123 VoiceDisconnect.mp3")
+            os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
             flag = True
             time.sleep(5)
     except RuntimeError as error:

@@ -174,7 +174,7 @@ readLux()
 readSHT()
 TextToSpeech()
 schedule.every(10).minutes.do(realtime)
-os.system("mpg123 VoiceReady.mp3")
+os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceReady.mp3")
 
 while True:
     try:
@@ -182,10 +182,11 @@ while True:
         if response == 0:
             mainloop()
             if(flag):
-                os.system("mpg123 VoiceConnect.mp3")
+                os.system(
+                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceConnect.mp3")
                 flag = False
         else:
-            os.system("mpg123 VoiceDisconnect.mp3")
+            os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
             flag = True
             time.sleep(5)
     except RuntimeError as error:
