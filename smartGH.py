@@ -176,10 +176,10 @@ while True:
                     "mpg123 /home/pi/Documents/smartGH-v2/VoiceConnect.mp3")
                 flag = False
         else:
-            if (time() - lasttime) >= 1800:
+            if (time.time() - lasttime) >= 1800:
                 os.system(
                     "mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
-                lasttime = time()
+                lasttime = time.time()
             flag = True
     except RuntimeError as error:
         print(error.args[0])
