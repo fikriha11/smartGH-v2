@@ -17,11 +17,10 @@ from gtts import gTTS
 url = "https://hidroponikwirolegi.belajarobot.com/sensor/insert"
 # url = "https://hidroponikbangsal.belajarobot.com/sensor/insert"
 
-
+lasttime = time.time()
 state = False
 lastState = False
 flag = False
-flag1 = 0
 
 SwitchPin = 23
 RelayPIn = 24
@@ -44,10 +43,18 @@ datenow = dt.now().strftime("%Y-%m-%d")
 
 
 def JamKipas():
-    if dt.now().hour <= 17 and dt.now().hour >= 7:
+    if dt.now().hour <= 15 and dt.now().hour >= 8:
         return True
     else:
         return False
+
+
+def ControlKipas():
+    readDHT()
+    if cTemp >= 32 and JamKipas():
+        GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
+    if cTemp <= 29 or JamKipas() == False:
+        GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
 
 
 def realtime():
@@ -117,7 +124,7 @@ def readLux():
         time.sleep(0.5)
         data = bus.read_i2c_block_data(0x39, 0x0C | 0x80, 2)
         lux = data[1] * 256 + data[0]
-        print("Lux: {} ".format(lux))
+        # print("Lux: {} ".format(lux))
         return True
     except Exception as error:
         print("Lux data error")
@@ -129,7 +136,7 @@ def readDHT():
         cTemp = dhtDevice.temperature
         fTemp = cTemp * (9 / 5) + 32
         humidity = dhtDevice.humidity
-        print("Temp: {} dan Hum: {}".format(cTemp, humidity))
+        # print("Temp: {} dan Hum: {}".format(cTemp, humidity))
         return True
     except Exception as error:
         print("Sensor DHT error")
@@ -140,7 +147,7 @@ def mainloop():
     global lastState
 
     # statement switch
-    print("Value Switch: {}".format(GPIO.input(SwitchPin)))
+    # print("Value Switch: {}".format(GPIO.input(SwitchPin)))
     if GPIO.input(SwitchPin) == GPIO.HIGH:
         state = True
     if GPIO.input(SwitchPin) == GPIO.LOW:
@@ -150,21 +157,13 @@ def mainloop():
         os.system("mpg123 temp.mp3")
         lastState = state
 
-    #  Control Temperatur
-    if cTemp >= 30 and JamKipas():
-        GPIO.output(RelayPIn, GPIO.LOW)  # Hidup
-    if cTemp <= 27 or JamKipas() == False:
-        GPIO.output(RelayPIn, GPIO.HIGH)  # Mati
-
-    schedule.run_pending()
-    time.sleep(1)
-
 
 # Inisialisasi
 readLux()
 readDHT()
 TextToSpeech()
 schedule.every(10).minutes.do(realtime)
+schedule.every(5).minutes.do(ControlKipas)
 os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceReady.mp3")
 
 while True:
@@ -177,10 +176,15 @@ while True:
                     "mpg123 /home/pi/Documents/smartGH-v2/VoiceConnect.mp3")
                 flag = False
         else:
-            os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
+            if (time() - lasttime) >= 1800:
+                os.system(
+                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
+                lasttime = time()
             flag = True
-            time.sleep(5)
     except RuntimeError as error:
         print(error.args[0])
         time.sleep(2)
         continue
+
+    schedule.run_pending()
+    time.sleep(1)

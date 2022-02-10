@@ -16,7 +16,6 @@ from gtts import gTTS
 
 url = "https://aklimatisasidisperta.belajarobot.com/sensor/insert"
 
-startTime = time.time()
 state = False
 lastState = False
 stateRelayA = True
@@ -154,7 +153,6 @@ def TutupAtap():
 def mainloop():
     global state
     global lastState
-    global startTime
     global stateRelayA
     global stateRelayB
 
@@ -182,9 +180,6 @@ def mainloop():
     else:
         stateRelayB = True
 
-    schedule.run_pending()
-    time.sleep(1)
-
 
 # Inisialisasi
 readLux()
@@ -211,3 +206,6 @@ while True:
         print(error.args[0])
         time.sleep(2)
         continue
+
+    schedule.run_pending()
+    time.sleep(1)
