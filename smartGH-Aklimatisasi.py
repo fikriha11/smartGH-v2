@@ -1,6 +1,5 @@
 import board
 import smbus
-import adafruit_dht
 import picamera
 import urllib.request
 import urllib.parse
