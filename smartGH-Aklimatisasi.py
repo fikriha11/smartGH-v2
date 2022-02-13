@@ -36,7 +36,6 @@ GPIO.setup(RelayPIn, GPIO.OUT)
 GPIO.setup(RelayPIn1, GPIO.OUT)
 GPIO.output(RelayPIn, GPIO.LOW)
 GPIO.output(RelayPIn1, GPIO.LOW)
-dhtDevice = adafruit_dht.DHT22(board.D14, use_pulseio=False)
 
 hostname = "8.8.8.8"
 datenow = dt.now().strftime("%Y-%m-%d")
