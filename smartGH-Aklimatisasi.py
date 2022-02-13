@@ -16,6 +16,7 @@ from gtts import gTTS
 
 url = "https://aklimatisasidisperta.belajarobot.com/sensor/insert"
 
+lasttime = time.time()
 state = False
 lastState = False
 stateRelayA = True
@@ -150,22 +151,9 @@ def TutupAtap():
             stateRelayA = False
 
 
-def mainloop():
-    global state
-    global lastState
+def BukaAtap():
     global stateRelayA
     global stateRelayB
-
-    # statement switch
-    print("Value Switch: {}".format(GPIO.input(SwitchPin)))
-    if GPIO.input(SwitchPin) == GPIO.HIGH:
-        state = True
-    if GPIO.input(SwitchPin) == GPIO.LOW:
-        state = lastState = False
-    if state != lastState:
-        time.sleep(1)
-        os.system("mpg123 temp.mp3")
-        lastState = state
 
     # Statement Relay Jam 5 dan jam 7 (Buka Atap)
     if dt.now().hour == 17 or dt.now().hour == 7:
@@ -181,16 +169,33 @@ def mainloop():
         stateRelayB = True
 
 
+def mainloop():
+    global state
+    global lastState
+
+    # statement switch
+    print("Value Switch: {}".format(GPIO.input(SwitchPin)))
+    if GPIO.input(SwitchPin) == GPIO.HIGH:
+        state = True
+    if GPIO.input(SwitchPin) == GPIO.LOW:
+        state = lastState = False
+    if state != lastState:
+        time.sleep(1)
+        os.system("mpg123 temp.mp3")
+        lastState = state
+
+
 # Inisialisasi
 readLux()
 readSHT()
 TextToSpeech()
-schedule.every(3).minutes.do(realtime)
+schedule.every(10).minutes.do(realtime)
 schedule.every(30).minutes.do(TutupAtap)
 os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceReady.mp3")
 
 while True:
     try:
+        BukaAtap()
         response = os.system("ping -c3 " + hostname)
         if response == 0:
             mainloop()
@@ -199,9 +204,11 @@ while True:
                     "mpg123 /home/pi/Documents/smartGH-v2/VoiceConnect.mp3")
                 flag = False
         else:
-            os.system("mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
+            if (time.time() - lasttime) >= 1800:
+                os.system(
+                    "mpg123 /home/pi/Documents/smartGH-v2/VoiceDisconnect.mp3")
+                lasttime = time.time()
             flag = True
-            time.sleep(5)
     except RuntimeError as error:
         print(error.args[0])
         time.sleep(2)
